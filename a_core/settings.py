@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-rj#-z^kx3j+1ay397otg6j8m_8#v^$^$jys6&41vy^&6le)ezc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'chat.lazyalgo.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'chat.lazyalgo.com']
 
 CSRF_TRUSTED_ORIGINS = [ 'https://chat.lazyalgo.com']
 
@@ -90,23 +90,23 @@ TEMPLATES = [
 # WSGI_APPLICATION = 'a_core.wsgi.application'
 ASGI_APPLICATION = 'a_core.asgi.application'
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels.layers.InMemoryChannelLayer'
-#     }
-# }
-
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("redis://default:ZidkNRRoWNtwMtAoQWpkqIqxfuTkKwgF@autorack.proxy.rlwy.net:39971")],
-        },
-        "OPTIONS": {
-            "ssl_cert_reqs": None  # Important for SSL connections
-        }
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
     }
 }
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("redis://default:ZidkNRRoWNtwMtAoQWpkqIqxfuTkKwgF@autorack.proxy.rlwy.net:39971")],
+#         },
+#         "OPTIONS": {
+#             "ssl_cert_reqs": None  # Important for SSL connections
+#         }
+#     }
+# }
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 

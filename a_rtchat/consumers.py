@@ -6,6 +6,28 @@ import json
 from .models import *
 
 
+class TestConsumer(WebsocketConsumer):
+    def connect(self):
+        print("Client connecting...")
+        self.accept()
+        print("Test connection accepted!")
+
+    def disconnect(self, close_code):
+        print(f"Client disconnected with code: {close_code}")
+
+    def receive(self, text_data):
+        try:
+            print(f"Received message: {text_data}")
+            # Echo the received message back to the client
+            self.send(text_data=json.dumps({
+                'message': f'Server received: {text_data}'
+            }))
+        except Exception as e:
+            print(f"Error handling message: {e}")
+            self.send(text_data=json.dumps({
+                'error': str(e)
+            }))
+
 class ChatroomConsumer(WebsocketConsumer):
     def connect(self):
         self.user = self.scope['user']
