@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'chat.lazyalgo.com']
 
-CSRF_TRUSTED_ORIGINS = [ 'https://*' ]
+CSRF_TRUSTED_ORIGINS = [ 'https://chat.lazyalgo.com']
 
 
 # Application definition
