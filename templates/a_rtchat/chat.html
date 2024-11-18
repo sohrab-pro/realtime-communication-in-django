@@ -19,14 +19,9 @@
             <div class="flex items-center rounded-xl px-2 py-2">
                 <form id="chat_message_form" class="w-full"
                     hx-ext="ws"
-                    ws-connect="wss://chat.lazyalgo.com/ws/chatroom/public-chat"
+                    ws-connect="wss://chat.lazyalgo.com/ws/chatroom/public-chat/"
                     ws-send
-                    _="on htmx:wsAfterSend reset() me console.log('Message sent')
-                    on htmx:wsConnecting console.log('Connecting...')
-                    on htmx:wsConnected console.log('Connected!')
-                    on htmx:wsSend console.log('Message sent')
-                    on htmx:wsError console.log('Error:', event.detail.error)"
-                    >
+                    _="on htmx:wsAfterSend reset() me console.log('Message sent')">
                     {% csrf_token %}
                     {{form}}
                 </form>
