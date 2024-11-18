@@ -101,6 +101,9 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [("redis://default:ZidkNRRoWNtwMtAoQWpkqIqxfuTkKwgF@autorack.proxy.rlwy.net:39971")],
+        },
+        "OPTIONS": {
+            "ssl_cert_reqs": None  # Important for SSL connections
         }
     }
 }
