@@ -6,12 +6,14 @@ import os
 
 
 class ChatGroup(models.Model):
-    group_name = models.CharField(max_length=128, unique=True, blank=True)
+    group_name = models.CharField(max_length=128, unique=True, blank=True, default=shortuuid.uuid)
     users_online = models.ManyToManyField(User, related_name='online_in_groups', blank=True)
+    members = models.ManyToManyField(User, related_name='chat_groups', blank=True)
+    is_private = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.group_name
-
 
 
 class GroupMessage(models.Model):
