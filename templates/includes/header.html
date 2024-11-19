@@ -11,7 +11,30 @@
             {% if request.user.is_authenticated %}
             <li x-data="{ dropdownOpen: false }" class="relative">
                 <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="cursor-pointer select-none">
-                    Chat
+                    Personal Chats
+                    <img x-bind:class="dropdownOpen && 'rotate-180 duration-300'" class="w-4" src="https://img.icons8.com/small/32/ffffff/expand-arrow.png" alt="Dropdown" />
+                </a>
+                <div x-show="dropdownOpen" x-cloak class="absolute right-0 bg-white text-black shadow rounded-lg w-40 p-2 z-20"
+                x-transition:enter="duration-300 ease-out"
+                x-transition:enter-start="opacity-0 -translate-y-5 scale-90"
+                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                >
+                    <ul class="hoverlist [&>li>a]:justify-end">
+                        {% for chatroom in user.chat_groups.all %}
+                        {% if chatroom.is_private %}
+                        {% for member in chatroom.members.all %}
+                        {% if member != user %}
+                        <li><a href="{% url 'chatroom' chatroom.group_name %}">{{ member.profile.name | title }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+            <li x-data="{ dropdownOpen: false }" class="relative">
+                <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="cursor-pointer select-none">
+                    Group Chats
                     <img x-bind:class="dropdownOpen && 'rotate-180 duration-300'" class="w-4" src="https://img.icons8.com/small/32/ffffff/expand-arrow.png" alt="Dropdown" />
                 </a>
                 <div x-show="dropdownOpen" x-cloak class="absolute right-0 bg-white text-black shadow rounded-lg w-40 p-2 z-20"
@@ -22,12 +45,12 @@
                     <ul class="hoverlist [&>li>a]:justify-end">
                         <li><a href="{% url 'home' %}">Public Chat</a></li>
                         {% for chatroom in user.chat_groups.all %}
-                        {% if chatroom.is_private %}
-                        {% for member in chatroom.members.all %}
-                        {% if member != user %}
-                        <li><a href="{% url 'chatroom' chatroom.group_name %}">{{ member.profile.name | title }}</a></li>
-                        {% endif %}
-                        {% endfor %}
+                        {% if chatroom.groupchat_name %}
+                        <li>
+                            <a href="{% url 'chatroom' chatroom.group_name %}" class="leading-5 text-right">
+                                {{chatroom.groupchat_name | slice:":20"}}
+                            </a>
+                        </li>
                         {% endif %}
                         {% endfor %}
                     </ul>
@@ -47,6 +70,7 @@
                     <ul class="hoverlist [&>li>a]:justify-end">
                         <li><a href="{% url 'profile' %}">My Profile</a></li>
                         <li><a href="{% url 'profile-edit' %}">Edit Profile</a></li>
+                        <li><a href="{% url 'new-groupchat' %}">Create Group</a></li>
                         <li><a href="{% url 'profile-settings' %}">Settings</a></li>
                         <li><a href="{% url 'account_logout' %}">Log Out</a></li>
                     </ul>
