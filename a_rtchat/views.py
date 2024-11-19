@@ -4,6 +4,9 @@ from .models import *
 from .forms import ChatmessageCreateForm, NewGroupForm, ChatRoomEditForm
 from django.http import Http404
 from django.contrib import messages
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from django.http import HttpResponse
 
 @login_required
 def chat_view(request, chatroom_name="public-chat"):
@@ -127,3 +130,25 @@ def leave_chatroom(request, chatroom_name):
     if request.user in chat_group.members.all():
         chat_group.members.remove(request.user)
     return redirect('home')
+
+
+@login_required
+def chat_file_upload(request, chatroom_name):
+    chat_group = get_object_or_404(ChatGroup, group_name=chatroom_name)
+    if request.htmx and request.FILES:
+        file = request.FILES['file']
+        message = GroupMessage.objects.create(
+            author=request.user,
+            file=file,
+            group=chat_group,
+        )
+        channel_layers = get_channel_layer()
+        event = {
+            'type': 'message_handler',
+            'message_id': message.id,
+        }
+
+        async_to_sync(channel_layers.group_send)(
+            chatroom_name, event
+        )
+        return HttpResponse(status=200)

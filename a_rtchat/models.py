@@ -31,3 +31,19 @@ class GroupMessage(models.Model):
 
     class Meta:
         ordering = ['-created']
+
+    @property
+    def filename(self):
+        if self.file:
+            return os.path.basename(self.file.name)
+        else:
+            return None
+
+    @property
+    def is_image(self):
+        try:
+            image = Image.open(self.file)
+            image.verify()
+            return True
+        except:
+            return False
